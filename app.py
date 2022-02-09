@@ -23,12 +23,6 @@ app = dash.Dash(server=server, external_stylesheets=[dbc.themes.BOOTSTRAP])
 # dark mode = CYBORG
 # normal mode = BOOTSTRAP
 
-
-@server.route("/download/<path:path>")
-def download(path):
-    """Serve a file from the upload directory."""
-    return send_from_directory(UPLOAD_DIRECTORY, path, as_attachment=True)
-
 app.layout = html.Div(
     [
       html.H2("noun",id="disp-word", style={'padding':'4px'},     
@@ -90,7 +84,7 @@ def toggle_configuration_display(n_clicks,n_letters):
     # print("header: " + header)
     header = [int(s) for s in header.split()]
     index = rand.randrange(header[1])
-    file.seek(header[0] + (nl+2)*index)
+    file.seek(header[0] + (nl+1)*index) # 2 on windows, 1 on posix
     word = file.readline()
 
 
