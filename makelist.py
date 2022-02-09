@@ -6,7 +6,7 @@ from math import floor
 from dash.exceptions import PreventUpdate
 
 
-def sort_list(filename="google-10000-english-no-swears.txt" ):
+def sort_list(filename="data/SOURCE=google-10000-english-no-swears.txt" ):
 
   print(filename)
 
@@ -18,8 +18,8 @@ def sort_list(filename="google-10000-english-no-swears.txt" ):
   doc = [d for d in doc if len(d) > 3 and len(d) < 9]
 
   # change this to use a different REGEX filter
-  vowels = re.compile(r"[aeiou][aeiou]")
-  doc = [d for d in doc if re.search(vowels,d) is not None]
+  # vowels = re.compile(r"[aeiou][aeiou]")
+  # doc = [d for d in doc if re.search(vowels,d) is not None]
 
   # everything below is rearranging the input file to match the output file
   doc.sort(key=len)
@@ -29,7 +29,7 @@ def sort_list(filename="google-10000-english-no-swears.txt" ):
 
   counts = [word_len.count(a) for a in range(4,9)]
 
-  with open("output-vowels.txt",'wt') as f:
+  with open("data/output.txt",'wt', newline='\n') as f:
 
     offset = 0
 
@@ -42,14 +42,14 @@ def sort_list(filename="google-10000-english-no-swears.txt" ):
     for i in range(0,len(counts)):
       c = counts[i]
       f.write('{0:09d} {1:09d}\n'.format(offset,c))
-      offset += c*(i+6)
+      offset += c*(i+5)
 
     for s in doc:
       f.write(s+'\n')
 
 
 
-def test_list(filename=""):
+def test_list(filename="data/output.txt"):
 
   n_letters = ['4','5','6']
 
@@ -60,7 +60,7 @@ def test_list(filename=""):
   nl = rand.choice(nl)
   print('Getting a '+str(nl)+"-letter word\n")
 
-  with open("vowel-pair.txt","rt") as file:
+  with open(filename,"rt") as file:
     for u in range(0,nl-3): 
       header = file.readline()
 
@@ -68,7 +68,7 @@ def test_list(filename=""):
     
     header = [int(s) for s in header.split()] # header values
     index = rand.randrange(header[1])   # get a random index
-    file.seek(header[0] + (nl+2)*index) # jump to destination
+    file.seek(header[0] + (nl+1)*index) # jump to destination
     word = file.readline() # and read the word you found there
 
     print("word: " + word)
