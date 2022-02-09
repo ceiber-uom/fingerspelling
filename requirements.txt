@@ -18,3 +18,4 @@ retrying
 six
 werkzeug
 wincertstore
+gunicorn
