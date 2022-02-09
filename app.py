@@ -16,6 +16,7 @@ import random as rand
 
 # Normally, Dash creates its own Flask server internally. By creating our own,
 # we can create a route for downloading files directly:
+
 server = Flask(__name__)
 app = dash.Dash(server=server, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
@@ -68,7 +69,7 @@ app.layout = html.Div(
 )
 def toggle_configuration_display(n_clicks,n_letters):
 
-  filename = "data\\vowel-pair.txt"
+  filename = "data/vowel-pair.txt"
 
   if n_clicks == 0: 
   	raise PreventUpdate
