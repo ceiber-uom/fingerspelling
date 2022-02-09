@@ -17,7 +17,7 @@ import random as rand
 # Normally, Dash creates its own Flask server internally. By creating our own,
 # we can create a route for downloading files directly:
 server = Flask(__name__)
-app = dash.Dash(server=server, external_stylesheets=[dbc.themes.CYBORG])
+app = dash.Dash(server=server, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 # dark mode = CYBORG
 # normal mode = BOOTSTRAP
@@ -38,6 +38,12 @@ app.layout = html.Div(
          				size="lg",className="mr-1",block=True),
         ],style={'width': '100%', 'display': 'block','padding':'4px'}
       ),
+      html.Div([
+         dbc.Button("See on SignBank", id='signbank-link', n_clicks=0, color="secondary",
+                        size="lg",className="mr-1",block=True,target="_blank",
+                        href="https://www.auslan.org.au/dictionary/words/noun-1.html"),
+        ],style={'width': '100%', 'display': 'block','padding':'4px'}
+      ),
       html.Div([        
 		dcc.Dropdown( id="word-len", options=[
 		        {'label': '4-letter words', 'value': '4'},
@@ -55,7 +61,8 @@ app.layout = html.Div(
 
 # Show or hide the extra configuration panel (working)
 @app.callback(
-    Output("disp-word", "children"),    
+    [Output("disp-word", "children"),
+     Output("signbank-link", "href")],
     Input("get-word", "n_clicks"), 
     State('word-len','value'),
 )
@@ -85,11 +92,13 @@ def toggle_configuration_display(n_clicks,n_letters):
     file.seek(header[0] + (nl+2)*index)
     word = file.readline()
 
+
+  href = "https://www.auslan.org.au/dictionary/words/{}-1.html".format(word)
     # print("word: " + word)
 
-  return word
+  return word, href
 
 
 if __name__ == "__main__":
-    # app.run_server(debug=True, port=8888)
-    app.run_server(host="0.0.0.0", port="8050")
+    app.run_server(debug=True, port=8888)
+    # app.run_server(host="0.0.0.0", port="8050", debug=True)
